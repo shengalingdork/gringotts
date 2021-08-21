@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark my-4">
   <span class="navbar-brand">
-    PERIOD: {{ $formattedSelectedDate }}
+    PERIOD: {{ $selectedDate }}
   </span>
   <div class="navbar-collapse justify-content-end">
     <form>
@@ -8,7 +8,7 @@
         <div class="col">
           <select class="custom-select custom-select-sm mr-1 loanDates">
             @foreach ($loanDates as $date)
-            <option value="{{ $date['id'] }}" {{ $selectedDate === $date['MMYYYY'] ? 'selected' : '' }}>{{ $date['MMYYYY'] }}</option>
+            <option value="{{ $date['id'] }}" {{ $selectedDate === $date['year'] ? 'selected' : '' }}>{{ $date['year'] }}</option>
             @endforeach
           </select>
         </div>
