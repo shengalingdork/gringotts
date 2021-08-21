@@ -33,11 +33,11 @@ class LoanRepository extends RecordRepository
 
   public function getDates()
   {
-    $select = DB::raw('YEAR(recorded_at) as year, MONTH(recorded_at) as month');
+    $select = DB::raw('YEAR(recorded_at) as year');
     $dates = Record::select($select)
       ->where('category_id', 1)
-      ->groupBy('year', 'month')
-      ->orderBy(DB::raw('year, month'), 'asc')
+      ->groupBy('year')
+      ->orderBy('year', 'asc')
       ->get();
 
     $array = [];
@@ -45,17 +45,14 @@ class LoanRepository extends RecordRepository
     foreach ($dates as $key => $date) {
       array_push($array, array(
         "id" => $key + 1,
-        "month" => $date->month,
-        "year" => $date->year,
-        "full" => $date->year . '-' . $this->__date->formatMonth($date->month) . '-01 00:00:00',
-        "MMYYYY" => $this->__date->formatMonth($date->month) . '-' . $date->year
+        "year" => $date->year
       ));
     }
 
     return $array;
   }
 
-  public function getLoansPerMonthYear($month, $year)
+  public function getLoansPerYear($year)
   {
     $ids = array();
 
@@ -63,7 +60,6 @@ class LoanRepository extends RecordRepository
       ->select('records.*')
       ->leftJoin('schemes', 'records.scheme_id', '=', 'schemes.id')
       ->where('records.category_id', '=', 1)
-      ->whereMonth('recorded_at', $month)
       ->whereYear('recorded_at', $year)
       ->orderBy('recorded_at', 'asc')
       ->get();

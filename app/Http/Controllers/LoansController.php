@@ -29,10 +29,9 @@ class LoansController extends Controller
     if ($id && $id > count($dates)) return redirect('loans');
 
     $currentDate = $id ? $dates[$id - 1] : end($dates);
-    $month = $currentDate['month'];
     $year = $currentDate['year'];
 
-    $loans = $this->__loan->getLoansPerMonthYear($month, $year);
+    $loans = $this->__loan->getLoansPerYear($year);
 
     foreach ($loans as $loan) {
       $loan = $this->__loan->format($loan);
@@ -40,8 +39,7 @@ class LoansController extends Controller
 
     return view('layouts.pages.loans', [
       'loanDates' => array_reverse($dates),
-      'formattedSelectedDate' => $this->__date->format($currentDate['full'], 'F Y'),
-      'selectedDate' => $currentDate['MMYYYY'],
+      'selectedDate' => $year,
       'loans' => $loans
     ]);
   }
